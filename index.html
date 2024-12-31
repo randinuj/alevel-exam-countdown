@@ -5,9 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Countdown Timer</title>
   <style>
+    @font-face {
+    font-family: 'Product Sans';
+    src: url('Product Sans Regular.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+    
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Product Sans, sans-serif;
     }
     .container {
       display: flex;
@@ -15,9 +22,11 @@
       align-items: center;
       height: 100vh;
       transition: background-color 0.3s ease;
+      margin-left: 20px; 
+      margin-right: 20px;
     }
     .light {
-      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      background: linear-gradient(135deg, #d1d1d1, #f0f0f0);
       color: black;
     }
     .dark {
