@@ -67,13 +67,14 @@
     }
 
     .quote {
+      font-size: 1.1rem;
       font-style: italic;
     }
 
     .author {
+      font-size: 1.1rem;
       margin-top: 5px;
       font-weight: bold;
-      font-size: 0.9rem;
     }
 
     .switch-container {
@@ -130,6 +131,7 @@
       transition: color 0.3s ease;
       font-size: 0.9rem;
       margin-top: 20px;
+      text-align: center;
     }
 
     .light .credits {
@@ -179,10 +181,55 @@
         padding: 15px;
       }
     }
+    .buttons-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.like-button, .share-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+.like-icon, .share-icon {
+  fill: #333;
+  transition: fill 0.3s ease;
+}
+
+.like-button.liked .like-icon {
+  fill: red;
+}
+
+#likeCount {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #333;
+      }
   </style>
 </head>
 <body>
+<div class="buttons-container">
+  <!-- Like Button -->
+  <div class="like-button" id="likeButton">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="like-icon">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+    <span id="likeCount">0</span>
+  </div>
 
+  <!-- Share Button -->
+  <div class="share-button" id="shareButton">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="share-icon">
+      <path d="M16 4l4 4-4 4V9H6v6h10v-3l4 4-4 4h-4l-4-4V9L8 5l4-4h4z" />
+    </svg>
+  </div>
+    </div>
   <div class="container light" id="container">
     <div class="countdown lightbg" id="countdownBox">
       <h1 id="countdown">Loading...</h1>
@@ -193,11 +240,10 @@
           <span class="slider"></span>
         </label>
       </div>
+      <div class="credits">
+        Developed with <span style="color: red;">&#10084;</span> by <strong><a href="https://about.me/randinu" target="_blank" style="text-decoration: none;">RandinuJ</a></strong>
+      </div>
     </div>
-  </div>
-
-  <div class="credits" style="text-align: center;">
-    Developed with <span style="color: red;">&#10084;</span> by <strong><a href="https://about.me/randinu" target="_blank" style="text-decoration: none;">RandinuJ</a></strong>
   </div>
 
   <script>
@@ -271,7 +317,39 @@
       updateCountdown();
       displayRandomQuote();
     });
+
+    let likeButton = document.getElementById('likeButton');
+let likeCount = document.getElementById('likeCount');
+let shareButton = document.getElementById('shareButton');
+
+// Like button functionality
+let isLiked = false;
+let likes = 0;
+
+likeButton.addEventListener('click', () => {
+  isLiked = !isLiked;
+  if (isLiked) {
+    likes++;
+    likeButton.classList.add('liked');
+  } else {
+    likes--;
+    likeButton.classList.remove('liked');
+  }
+  likeCount.textContent = likes;
+});
+
+// Share button functionality
+shareButton.addEventListener('click', () => {
+  if (navigator.share) {
+    navigator.share({
+      title: 'My Web Page',
+      url: window.location.href
+    }).catch(console.error);
+  } else {
+    alert('Sharing is not supported on this device.');
+  }
+});
   </script>
 
 </body>
-</html>
+  </html>
