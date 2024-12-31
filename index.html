@@ -16,6 +16,8 @@
       margin: 0;
       padding: 0;
       font-family: Product Sans, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
     }
 
     .container {
@@ -23,9 +25,8 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      transition: background-color 0.3s ease;
       padding: 0 20px;
-      box-sizing: border-box;
+      transition: background-color 0.3s ease;
     }
 
     .light {
@@ -40,11 +41,11 @@
 
     .countdown {
       text-align: center;
-      width: 100%;
       max-width: 600px;
       padding: 20px;
       border-radius: 10px;
       transition: background-color 0.3s ease;
+      box-sizing: border-box;
     }
 
     .lightbg {
@@ -124,11 +125,9 @@
       transform: translateX(26px);
     }
 
-    /* Credits CSS */
     .credits {
       color: gray;
       transition: color 0.3s ease;
-      text-align: center;
       font-size: 0.9rem;
       margin-top: 20px;
     }
@@ -142,7 +141,7 @@
     }
 
     /* Mobile responsiveness */
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       h1 {
         font-size: 1.5rem;
       }
@@ -153,10 +152,22 @@
 
       .switch {
         width: 50px;
-        height: 30px;
+        height: 28px;
       }
 
-      .credits {
+      .slider:before {
+        height: 22px;
+        width: 22px;
+        bottom: 3px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      p {
         font-size: 0.8rem;
       }
 
@@ -166,33 +177,6 @@
 
       .countdown {
         padding: 15px;
-      }
-    }
-
-    @media (max-width: 400px) {
-      h1 {
-        font-size: 1.2rem;
-      }
-
-      p {
-        font-size: 0.8rem;
-      }
-
-      .switch {
-        width: 40px;
-        height: 25px;
-      }
-
-      .credits {
-        font-size: 0.7rem;
-      }
-
-      .container {
-        padding: 5px;
-      }
-
-      .countdown {
-        padding: 10px;
       }
     }
   </style>
@@ -212,7 +196,7 @@
     </div>
   </div>
 
-  <div class="credits">
+  <div class="credits" style="text-align: center;">
     Developed with <span style="color: red;">&#10084;</span> by <strong><a href="https://about.me/randinu" target="_blank" style="text-decoration: none;">RandinuJ</a></strong>
   </div>
 
@@ -285,7 +269,9 @@
 
       setInterval(updateCountdown, 1000);
       updateCountdown();
+      displayRandomQuote();
     });
   </script>
+
 </body>
-        </html>
+</html>
