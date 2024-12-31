@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Countdown Timer</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Countdown to A/L Exam</h1>
-        <div id="countdown" class="countdown"></div>
-        <div class="message">The clock is ticking son, work now or you shall regret. Every second counts. Good luck!</div>
-        <button id="modeSwitcher" class="mode-button">Switch to Blue Mode</button>
-    </div>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="%PUBLIC_URL%/styles.css" />
+  </head>
+  <body>
+    <div id="root"></div>
 
-    <script src="app.js"></script>
-</body>
+    <!-- The React app will be injected here -->
+    <script src="%PUBLIC_URL%/index.js"></script>
+  </body>
 </html>
