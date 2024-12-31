@@ -16,7 +16,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     max-width: 400px;
-    width: 90%;
+    width: 70%;
 }
 
 h1 {
@@ -28,13 +28,13 @@ h1 {
     font-size: 1.5rem;
     margin: 20px 0;
     font-weight: bold;
-    color: #00d4ff;
+    color: #db0f0f;
 }
 
 .message {
     font-size: 1.2rem;
     margin-top: 20px;
-    color: #f5a623;
+    color: #d1d1d1;
 }
 
 @font-face {
@@ -43,7 +43,3 @@ h1 {
     font-weight: normal;
     font-style: normal;
 }
-
-body {
-    font-family: 'Product Sans', sans-serif;
-    }
