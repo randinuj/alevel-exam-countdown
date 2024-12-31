@@ -24,14 +24,14 @@ const CountdownTimer = () => {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    return { months, days, hours, minutes, seconds, distance };
+    return { months, days, hours, minutes, seconds };
   }
 
   function handleModeSwitch() {
     setIsDarkMode(!isDarkMode);
   }
 
-  const { months, days, hours, minutes, seconds, distance } = timeLeft;
+  const { months, days, hours, minutes, seconds } = timeLeft;
 
   return (
     <div className={`container ${isDarkMode ? "dark" : "light"}`}>
@@ -56,3 +56,4 @@ const CountdownTimer = () => {
 };
 
 export default CountdownTimer;
+         
