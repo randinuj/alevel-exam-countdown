@@ -6,33 +6,37 @@
   <title>Countdown Timer</title>
   <style>
     @font-face {
-    font-family: 'Product Sans';
-    src: url('Product Sans Regular.ttf') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'Product Sans';
+      src: url('Product Sans Regular.ttf') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
-    
+
     body {
       margin: 0;
       padding: 0;
       font-family: Product Sans, sans-serif;
     }
+
     .container {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       transition: background-color 0.3s ease;
-      position: absolute;
+      padding: 30px;
     }
+
     .light {
       background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
       color: black;
     }
+
     .dark {
       background: linear-gradient(135deg, #2c3e50, #34495e);
       color: white;
     }
+
     .countdown {
       text-align: center;
       max-width: 90%;
@@ -40,34 +44,42 @@
       border-radius: 10px;
       transition: background-color 0.3s ease;
     }
+
     .lightbg {
       background-color: rgba(255, 255, 255, 0.5);
     }
+
     .darkbg {
       background-color: rgba(0, 0, 0, 0.5);
     }
+
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
+
     p {
       font-size: 1rem;
       margin-bottom: 2rem;
     }
+
     .switch-container {
       margin-top: 1rem;
     }
+
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
+
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
+
     .slider {
       position: absolute;
       cursor: pointer;
@@ -79,6 +91,7 @@
       transition: 0.4s;
       border-radius: 34px;
     }
+
     .slider:before {
       position: absolute;
       content: "";
@@ -90,24 +103,38 @@
       left: 4px;
       transition: 0.4s;
     }
+
     input:checked + .slider {
       background-color: #2196f3;
     }
+
     input:checked + .slider:before {
       transform: translateX(26px);
     }
   </style>
 </head>
 <body>
-
-  <div id="root"></div>
-
+  <div class="container light">
+    <div class="countdown lightbg">
+      <h1 id="countdown">Loading...</h1>
+      <p>The clock is ticking son, work now or you shall regret. Every second counts. Good luck!</p>
+      <div class="switch-container">
+        <label class="switch">
+          <input type="checkbox" id="modeSwitch">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:10px;">
+    <p>Developed by <a href="https://about.me/randinu" target="_blank">RandinuJ</a></p>
+  </div>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const targetDate = new Date("October 1, 2025 00:00:00").getTime();
-      const container = document.querySelector('.container');
-      const switchButton = document.querySelector('#modeSwitch');
-      const countdown = document.querySelector('.countdown');
+      const container = document.querySelector(".container");
+      const switchButton = document.querySelector("#modeSwitch");
+      const countdown = document.querySelector(".countdown");
 
       function calculateTimeLeft() {
         const now = new Date().getTime();
@@ -130,37 +157,22 @@
       }
 
       function toggleDarkMode() {
-        container.classList.toggle('dark', switchButton.checked);
-        container.classList.toggle('light', !switchButton.checked);
-        
-        countdown.classList.toggle('darkbg', switchButton.checked);
-        countdown.classList.toggle('lightbg', !switchButton.checked);
+        container.classList.toggle("dark", switchButton.checked);
+        container.classList.toggle("light", !switchButton.checked);
+
+        countdown.classList.toggle("darkbg", switchButton.checked);
+        countdown.classList.toggle("lightbg", !switchButton.checked);
       }
 
-      switchButton.addEventListener('change', toggleDarkMode);
+      switchButton.addEventListener("change", toggleDarkMode);
 
       setInterval(updateCountdown, 1000);
       updateCountdown(); // Initial call to set the countdown text
 
       // Set default mode
-      container.classList.add('light');
-      countdown.classList.add('lightbg');
+      container.classList.add("light");
+      countdown.classList.add("lightbg");
     });
   </script>
-
-  <div class="container">
-    <div class="countdown lightbg">
-      <h1 id="countdown">Loading...</h1>
-      <p>The clock is ticking son, work now or you shall regret. Every second counts. Good luck!</p>
-      <div class="switch-container">
-        <label class="switch">
-          <input type="checkbox" id="modeSwitch">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-  </div>
-  <div><p>Developed by <a href="https://about.me/randinu">RandinuJ</a></p></div>
-
 </body>
 </html>
