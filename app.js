@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './styles.css';
 
 function App() {
   const [mode, setMode] = useState('dark'); // Default to dark mode
@@ -28,13 +28,7 @@ function App() {
   }, []);
 
   const handleModeSwitch = () => {
-    if (mode === 'dark') {
-      setMode('blue');
-    } else if (mode === 'blue') {
-      setMode('white');
-    } else {
-      setMode('dark');
-    }
+    setMode(mode === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -45,9 +39,10 @@ function App() {
         <div className="message">
           The clock is ticking son, work now or you shall regret. Every second counts. Good luck!
         </div>
-        <button onClick={handleModeSwitch} className="mode-button">
-          Switch to {mode === 'dark' ? 'Blue Mode' : mode === 'blue' ? 'White Mode' : 'Dark Mode'}
-        </button>
+        <label className="switch">
+          <input type="checkbox" checked={mode === 'light'} onChange={handleModeSwitch} />
+          <span className="slider"></span>
+        </label>
       </div>
     </div>
   );
