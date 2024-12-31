@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './styles.css';
+import './App.css';
 
 function App() {
-  const [mode, setMode] = useState('dark');
+  const [mode, setMode] = useState('dark'); // Default to dark mode
 
-  const targetDate = new Date("October 1, 2025 00:00:00").getTime();
-  
+  const targetDate = new Date("October 1, 2025 00:00:00").getTime(); // Countdown target date
+
   const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function App() {
 
     const interval = setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(interval); // Cleanup on component unmount
+    return () => clearInterval(interval); // Cleanup the interval when component unmounts
   }, []);
 
   const handleModeSwitch = () => {
