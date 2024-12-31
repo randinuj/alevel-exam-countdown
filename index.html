@@ -11,12 +11,13 @@
       font-weight: normal;
       font-style: normal;
     }
-    
+
     body {
       margin: 0;
       padding: 0;
       font-family: Product Sans, sans-serif;
     }
+
     .container {
       display: flex;
       justify-content: center;
@@ -25,14 +26,17 @@
       transition: background-color 0.3s ease;
       padding: 0 20px;
     }
+
     .light {
       background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
       color: black;
     }
+
     .dark {
       background: linear-gradient(135deg, #2c3e50, #34495e);
       color: white;
     }
+
     .countdown {
       text-align: center;
       max-width: 600px;
@@ -40,34 +44,52 @@
       border-radius: 10px;
       transition: background-color 0.3s ease;
     }
+
     .lightbg {
       background-color: rgba(255, 255, 255, 0.5);
     }
+
     .darkbg {
       background-color: rgba(0, 0, 0, 0.5);
     }
+
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
+
     p {
       font-size: 1rem;
       margin-bottom: 2rem;
     }
+
+    .quote {
+      font-style: italic;
+    }
+
+    .author {
+      margin-top: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
     .switch-container {
       margin-top: 1rem;
     }
+
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
+
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
+
     .slider {
       position: absolute;
       cursor: pointer;
@@ -79,6 +101,7 @@
       transition: 0.4s;
       border-radius: 34px;
     }
+
     .slider:before {
       position: absolute;
       content: "";
@@ -90,17 +113,13 @@
       left: 4px;
       transition: 0.4s;
     }
+
     input:checked + .slider {
       background-color: #2196f3;
     }
+
     input:checked + .slider:before {
       transform: translateX(26px);
-    }
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: gray;
     }
   </style>
 </head>
@@ -119,8 +138,6 @@
     </div>
   </div>
 
-  <footer>Developed by <a href="https://about.me/randinu" target="_blank">RandinuJ</a></footer>
-
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const targetDate = new Date("October 1, 2025 00:00:00").getTime();
@@ -130,16 +147,17 @@
       const quoteElement = document.querySelector('#quote');
 
       const quotes = [
-        "There are no secrets to success. It is the result of preparation, hard work, and learning from failure. — Colin Powell",
-        "The beautiful thing about learning is that no one can take it away from you. — B.B. King",
-        "Work hard in silence, let your success be your noise. — Frank Ocean",
-        "Education is the most powerful weapon which you can use to change the world. — Nelson Mandela",
-        "The difference between try and triumph is just a little umph! — Marvin Phillips"
+        { text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell" },
+        { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+        { text: "Work hard in silence, let your success be your noise.", author: "Frank Ocean" },
+        { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+        { text: "The difference between try and triumph is just a little umph!", author: "Marvin Phillips" }
       ];
 
       function displayRandomQuote() {
         const randomIndex = Math.floor(Math.random() * quotes.length);
-        quoteElement.textContent = quotes[randomIndex];
+        const quote = quotes[randomIndex];
+        quoteElement.innerHTML = `<span class="quote">"${quote.text}"</span><br><span class="author">— ${quote.author}</span>`;
       }
 
       function calculateTimeLeft() {
@@ -180,4 +198,4 @@
   </script>
 
 </body>
-                         </html>
+</html>
