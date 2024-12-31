@@ -24,28 +24,27 @@
       height: 100vh;
       transition: background-color 0.3s ease;
       position: absolute;
-      left: 30px;
-      right: 30px;
     }
     .light {
       background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
       color: black;
-      background-color: rgba(255, 255, 255, 0.5);
     }
     .dark {
       background: linear-gradient(135deg, #2c3e50, #34495e);
       color: white;
-      background-color: rgba(0, 0, 0, 0.5);
     }
     .countdown {
       text-align: center;
       max-width: 90%;
       padding: 20px;
       border-radius: 10px;
-      
+      transition: background-color 0.3s ease;
     }
     .lightbg {
       background-color: rgba(255, 255, 255, 0.5);
+    }
+    .darkbg {
+      background-color: rgba(0, 0, 0, 0.5);
     }
     h1 {
       font-size: 2rem;
@@ -108,6 +107,7 @@
       const targetDate = new Date("October 1, 2025 00:00:00").getTime();
       const container = document.querySelector('.container');
       const switchButton = document.querySelector('#modeSwitch');
+      const countdown = document.querySelector('.countdown');
 
       function calculateTimeLeft() {
         const now = new Date().getTime();
@@ -132,6 +132,9 @@
       function toggleDarkMode() {
         container.classList.toggle('dark', switchButton.checked);
         container.classList.toggle('light', !switchButton.checked);
+        
+        countdown.classList.toggle('darkbg', switchButton.checked);
+        countdown.classList.toggle('lightbg', !switchButton.checked);
       }
 
       switchButton.addEventListener('change', toggleDarkMode);
@@ -141,11 +144,12 @@
 
       // Set default mode
       container.classList.add('light');
+      countdown.classList.add('lightbg');
     });
   </script>
 
   <div class="container">
-    <div class="countdown">
+    <div class="countdown lightbg">
       <h1 id="countdown">Loading...</h1>
       <p>The clock is ticking son, work now or you shall regret. Every second counts. Good luck!</p>
       <div class="switch-container">
@@ -156,7 +160,7 @@
       </div>
     </div>
   </div>
-  <div> <p> Developed by <a href="https://about.me/randinu">RandinuJ</a></p></div>
+  <div><p>Developed by <a href="https://about.me/randinu">RandinuJ</a></p></div>
 
 </body>
 </html>
