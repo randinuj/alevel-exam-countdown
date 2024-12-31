@@ -1,50 +1,40 @@
-const CountdownTimer = () => {
-    const targetDate = new Date("2025-10-01T00:00:00").getTime();
-    const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
+const countdownElement = document.getElementById('countdown');
+const modeSwitcher = document.getElementById('modeSwitcher');
 
-    React.useEffect(() => {
-        const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
-        return () => clearInterval(timer);
-    }, []);
+const targetDate = new Date("October 1, 2025 00:00:00").getTime();
 
-    function calculateTimeLeft() {
-        const now = new Date().getTime();
-        const diff = targetDate - now;
-        if (diff <= 0) return null;
-        const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
-        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        return { months, days, hours, minutes, seconds };
+function updateCountdown() {
+    const now = new Date().getTime();
+    const timeLeft = targetDate - now;
+
+    const months = Math.floor(timeLeft / (1000 * 60 * 60 * 24 * 30));
+    const days = Math.floor((timeLeft % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    countdownElement.innerHTML = `You have ${months} Months ${days} Days ${hours} Hours ${minutes} Minutes & ${seconds} Seconds for the A/L Exam.`;
+}
+
+setInterval(updateCountdown, 1000);
+
+let currentMode = 'dark';
+
+modeSwitcher.addEventListener('click', () => {
+    if (currentMode === 'dark') {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('blue-mode');
+        modeSwitcher.textContent = "Switch to White Mode";
+        currentMode = 'blue';
+    } else if (currentMode === 'blue') {
+        document.body.classList.remove('blue-mode');
+        document.body.classList.add('white-mode');
+        modeSwitcher.textContent = "Switch to Dark Mode";
+        currentMode = 'white';
+    } else {
+        document.body.classList.remove('white-mode');
+        document.body.classList.add('dark-mode');
+        modeSwitcher.textContent = "Switch to Blue Mode";
+        currentMode = 'dark';
     }
-
-    return React.createElement(
-        "div",
-        { className: "container" },
-        React.createElement("h1", null, "Countdown to A/L Exam"),
-        timeLeft
-            ? React.createElement(
-                  "div",
-                  { className: "countdown" },
-                  `You have ${timeLeft.months} Months ${timeLeft.days} Days ${timeLeft.hours} Hours ${timeLeft.minutes} Minutes & ${timeLeft.seconds} Seconds.`
-              )
-            : React.createElement(
-                  "div",
-                  { className: "countdown" },
-                  "The A/L Exam has started. Good luck!"
-              ),
-        React.createElement(
-            "div",
-            { className: "message" },
-            timeLeft
-                ? "The clock is ticking. Work hard now or regret later. Every second counts!"
-                : "It's time to shine. All the best!"
-        )
-    );
-};
-
-ReactDOM.render(
-    React.createElement(CountdownTimer, null),
-    document.getElementById("root")
-);
+});
