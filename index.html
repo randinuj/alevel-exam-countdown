@@ -11,79 +11,63 @@
       font-weight: normal;
       font-style: normal;
     }
-
+    
     body {
       margin: 0;
       padding: 0;
       font-family: Product Sans, sans-serif;
-      background-color: #f0f0f0;
     }
-
     .container {
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      box-sizing: border-box;
+      height: 100vh;
       transition: background-color 0.3s ease;
+      padding: 0 20px;
     }
-
     .light {
       background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
       color: black;
     }
-
     .dark {
       background: linear-gradient(135deg, #2c3e50, #34495e);
       color: white;
     }
-
     .countdown {
       text-align: center;
-      max-width: 100%;
+      max-width: 600px;
       padding: 20px;
       border-radius: 10px;
       transition: background-color 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-
     .lightbg {
       background-color: rgba(255, 255, 255, 0.5);
     }
-
     .darkbg {
       background-color: rgba(0, 0, 0, 0.5);
     }
-
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
-
     p {
       font-size: 1rem;
       margin-bottom: 2rem;
     }
-
     .switch-container {
       margin-top: 1rem;
     }
-
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
-
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-
     .slider {
       position: absolute;
       cursor: pointer;
@@ -95,7 +79,6 @@
       transition: 0.4s;
       border-radius: 34px;
     }
-
     .slider:before {
       position: absolute;
       content: "";
@@ -107,51 +90,26 @@
       left: 4px;
       transition: 0.4s;
     }
-
     input:checked + .slider {
       background-color: #2196f3;
     }
-
     input:checked + .slider:before {
       transform: translateX(26px);
     }
-
-    .footer {
+    footer {
       text-align: center;
-      font-size: 0.9rem;
       margin-top: 20px;
-    }
-
-    .footer a {
-      color: #2196f3;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Responsive adjustments */
-    @media screen and (max-width: 768px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      p {
-        font-size: 0.9rem;
-      }
-
-      .countdown {
-        padding: 15px;
-      }
+      font-size: 0.9rem;
+      color: gray;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="countdown lightbg">
+
+  <div class="container light" id="container">
+    <div class="countdown lightbg" id="countdownBox">
       <h1 id="countdown">Loading...</h1>
-      <p>The clock is ticking son, work now or you shall regret. Every second counts. Good luck!</p>
+      <p id="quote"></p>
       <div class="switch-container">
         <label class="switch">
           <input type="checkbox" id="modeSwitch">
@@ -159,17 +117,30 @@
         </label>
       </div>
     </div>
-    <div class="footer">
-      <p>Developed by <a href="https://about.me/randinu" target="_blank">RandinuJ</a></p>
-    </div>
   </div>
+
+  <footer>Developed by <a href="https://about.me/randinu" target="_blank">RandinuJ</a></footer>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const targetDate = new Date("October 1, 2025 00:00:00").getTime();
-      const container = document.querySelector('.container');
+      const container = document.querySelector('#container');
       const switchButton = document.querySelector('#modeSwitch');
-      const countdown = document.querySelector('.countdown');
+      const countdownBox = document.querySelector('#countdownBox');
+      const quoteElement = document.querySelector('#quote');
+
+      const quotes = [
+        "There are no secrets to success. It is the result of preparation, hard work, and learning from failure. — Colin Powell",
+        "The beautiful thing about learning is that no one can take it away from you. — B.B. King",
+        "Work hard in silence, let your success be your noise. — Frank Ocean",
+        "Education is the most powerful weapon which you can use to change the world. — Nelson Mandela",
+        "The difference between try and triumph is just a little umph! — Marvin Phillips"
+      ];
+
+      function displayRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        quoteElement.textContent = quotes[randomIndex];
+      }
 
       function calculateTimeLeft() {
         const now = new Date().getTime();
@@ -186,7 +157,7 @@
 
       function updateCountdown() {
         const { months, days, hours, minutes, seconds } = calculateTimeLeft();
-        document.querySelector("#countdown").innerHTML = `
+        document.querySelector("#countdown").textContent = `
           You have ${months} Months ${days} Days ${hours} Hours ${minutes} Minutes & ${seconds} Seconds for the A/L Exam.
         `;
       }
@@ -194,20 +165,19 @@
       function toggleDarkMode() {
         container.classList.toggle('dark', switchButton.checked);
         container.classList.toggle('light', !switchButton.checked);
-
-        countdown.classList.toggle('darkbg', switchButton.checked);
-        countdown.classList.toggle('lightbg', !switchButton.checked);
+        
+        countdownBox.classList.toggle('darkbg', switchButton.checked);
+        countdownBox.classList.toggle('lightbg', !switchButton.checked);
       }
 
       switchButton.addEventListener('change', toggleDarkMode);
 
       setInterval(updateCountdown, 1000);
-      updateCountdown(); // Initial call to set the countdown text
-
-      // Set default mode
-      container.classList.add('light');
-      countdown.classList.add('lightbg');
+      updateCountdown(); 
+      displayRandomQuote();
+      toggleDarkMode(); // Set the initial mode
     });
   </script>
+
 </body>
-  </html>
+                         </html>
