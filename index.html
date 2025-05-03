@@ -13,10 +13,14 @@
     }
 
     /* Make html/body fill viewport and center children */
-    html, body {
+    html{
+      height:100%;
+      background-color:#f0f0f0;
+    }
+    body {
       margin: 0;
       padding: 0;
-      height: 100%;              /* fill screen */
+      min-height: 100vh;              /* fill screen */
       display: grid;
       place-items: center;       /* center .container */
       font-family: 'Product Sans', sans-serif;
