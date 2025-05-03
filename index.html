@@ -126,9 +126,18 @@
       .container { padding: 10px; }
       .countdown { padding: 15px; }
     }
+    body.light {
+  background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
+  color: black;
+}
+
+body.dark {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+    }
   </style>
 </head>
-<body class="container light">
+<body class="light" id="body">
   <div class="container" id="container">
     <div class="countdown lightbg" id="countdownBox">
       <h1 id="countdown">Loading...</h1>
@@ -183,10 +192,11 @@
     }
 
     function toggleDarkMode() {
-      container.classList.toggle("dark", switchBtn.checked);
-      container.classList.toggle("light", !switchBtn.checked);
-      box.classList.toggle("darkbg", switchBtn.checked);
-      box.classList.toggle("lightbg", !switchBtn.checked);
+  const body = document.getElementById("body");
+  body.classList.toggle("dark", switchBtn.checked);
+  body.classList.toggle("light", !switchBtn.checked);
+  box.classList.toggle("darkbg", switchBtn.checked);
+  box.classList.toggle("lightbg", !switchBtn.checked);
     }
 
     switchBtn.addEventListener("change", toggleDarkMode);
