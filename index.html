@@ -18,15 +18,13 @@
   font-family: Product Sans, sans-serif;
   background-color: #f0f0f0;
   color: #333;
-  display: grid;
-  place-items: center;
-  height: 100vh;
 }
 
 .container {
-  display: flex;
+/*  display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;*/
+  position: absolute;
   padding: 20px;
   transition: background-color 0.3s ease;
   /* height removed */
@@ -346,6 +344,20 @@ shareButton.addEventListener('click', () => {
     alert('Sharing is not supported on this device.');
   }
 });*/
+  function centerContainer() {
+    const container = document.querySelector('.container');
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+    const containerHeight = container.offsetHeight;
+    const containerWidth = container.offsetWidth;
+
+    container.style.top = `${(viewportHeight - containerHeight) / 2}px`;
+    container.style.left = `${(viewportWidth - containerWidth) / 2}px`;
+  }
+
+  window.addEventListener('load', centerContainer);
+  window.addEventListener('resize', centerContainer);
+
   </script>
 
 </body>
