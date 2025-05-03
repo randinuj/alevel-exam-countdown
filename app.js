@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 
 const CountdownTimer = () => {
-  const targetDate = new Date("October 1, 2025 00:00:00").getTime();
+  const targetDate = new Date("November 10, 2025 00:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
   const [isDarkMode, setIsDarkMode] = useState(false);
 
