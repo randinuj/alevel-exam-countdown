@@ -25,7 +25,6 @@ display: grid;
 display: flex;
   flex-direction: column;
 /*  align-items: center;*/
-  position: absolute;
   padding: 0;
   transition: background-color 0.3s ease;
   /* height removed */
@@ -48,6 +47,7 @@ display: flex;
       border-radius: 10px;
       transition: background-color 0.3s ease;
       box-sizing: border-box;
+      position: absolute;
     }
 
     .lightbg {
@@ -346,7 +346,7 @@ shareButton.addEventListener('click', () => {
   }
 });*/
   function centerContainer() {
-    const container = document.querySelector('.container');
+    const container = document.querySelector('.countdown');
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
     const containerHeight = container.offsetHeight;
