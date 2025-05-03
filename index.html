@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Countdown Timer</title>
   <style>
     @font-face {
@@ -12,220 +12,117 @@
       font-style: normal;
     }
 
+    /* Make html/body fill viewport and center children */
     html, body {
-margin: 0;
-padding: 0;
-      height:100%;
-font-family: Product Sans, sans-serif;
-background-color: #f0f0f0;
-color: #333;
-display: grid;
-      place-items: center;
-}
+      margin: 0;
+      padding: 0;
+      height: 100%;              /* fill screen */
+      display: grid;
+      place-items: center;       /* center .container */
+      font-family: 'Product Sans', sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
 
-.container {
-display: flex;
-  flex-direction: column;
-/*  align-items: center;*/
-  padding: 0;
-  transition: background-color 0.3s ease;
-  /* height removed */
-}
+    /* Your container box */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
 
+    /* Light & dark backgrounds on the container wrapper */
     .light {
       background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
       color: black;
     }
-
     .dark {
       background: linear-gradient(135deg, #2c3e50, #34495e);
       color: white;
     }
 
+    /* Countdown card */
     .countdown {
       text-align: center;
       max-width: 600px;
+      width: 100%;
       padding: 20px;
       border-radius: 10px;
-      transition: background-color 0.3s ease;
       box-sizing: border-box;
-      position: absolute;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    .lightbg {
-      background-color: rgba(255, 255, 255, 0.5);
-    }
-
-    .darkbg {
-      background-color: rgba(0, 0, 0, 0.5);
-    }
+    .lightbg { background-color: rgba(255,255,255,0.5); }
+    .darkbg  { background-color: rgba(0,0,0,0.5); }
 
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
-
     p {
       font-size: 2rem;
       margin-bottom: 2rem;
     }
+    .quote { font-size: 1.1rem; font-style: italic; }
+    .author { font-size: 1.1rem; margin-top: 5px; font-weight: bold; }
 
-    .quote {
-      font-size: 1.1rem;
-      font-style: italic;
-    }
-
-    .author {
-      font-size: 1.1rem;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-
-    .switch-container {
-      margin-top: 1rem;
-    }
-
+    /* Toggle switch */
+    .switch-container { margin-top: 1rem; }
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
+    .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background-color: #808080;
       transition: 0.4s;
       border-radius: 34px;
     }
-
     .slider:before {
-      position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
-      background-color: white;
+      position: absolute;
+      height: 26px; width: 26px;
       border-radius: 50%;
-      bottom: 4px;
-      left: 4px;
+      background: white;
+      bottom: 4px; left: 4px;
       transition: 0.4s;
     }
+    input:checked + .slider { background-color: #2196f3; }
+    input:checked + .slider:before { transform: translateX(26px); }
 
-    input:checked + .slider {
-      background-color: #2196f3;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-
-    .credits{
-      transition: color 0.3s ease;
+    /* Credits */
+    .credits {
       font-size: 0.8rem;
       margin-top: 10px;
       padding-top: 10px;
       text-align: center;
+      transition: color 0.3s ease;
     }
+    .light .credits { color: gray; }
+    .dark .credits  { color: lightgray; }
 
-    .light .credits {
-      color: gray;
-    }
-
-    .dark .credits {
-      color: lightgray;
-    }
-
-    /* Mobile responsiveness */
+    /* Responsiveness */
     @media (max-width: 768px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      p {
-        font-size: 0.9rem;
-      }
-
-      .switch {
-        width: 50px;
-        height: 28px;
-      }
-
-      .slider:before {
-        height: 22px;
-        width: 22px;
-        bottom: 3px;
-      }
+      h1 { font-size: 1.5rem; }
+      p  { font-size: 0.9rem; }
+      .switch { width: 50px; height: 28px; }
+      .slider:before { width: 22px; height: 22px; bottom: 3px; }
     }
-
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1.2rem;
-      }
-
-      p {
-        font-size: 0.8rem;
-      }
-
-      .container {
-        padding: 10px;
-      }
-
-      .countdown {
-        padding: 15px;
-      }
+      h1 { font-size: 1.2rem; }
+      p  { font-size: 0.8rem; }
+      .container { padding: 10px; }
+      .countdown { padding: 15px; }
     }
-/*.buttons-container {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: middle;
-}
-
-.like-button, .share-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin: 5px 0;
-}
-
-.like-icon, .share-icon {
-  fill: #333;
-  transition: fill 0.3s ease;
-}
-
-.like-button.liked .like-icon {
-  fill: red;
-}
-
-#likeCount {
-  font-size: 14px;
-  margin-top: 5px;
-  color: #333;
-      }*/
   </style>
 </head>
 <body>
-<!-- <div class="buttons-container">
-  <div class="like-button" id="likeButton">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="like-icon">
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-    <span id="likeCount">0</span>
-  </div>
-    </div> -->
   <div class="container light" id="container">
     <div class="countdown lightbg" id="countdownBox">
       <h1 id="countdown">Loading...</h1>
@@ -236,132 +133,61 @@ display: flex;
           <span class="slider"></span>
         </label>
       </div>
-    </div><br><br><div class="credits">
-        Developed with <span style="color: red;">&#10084;</span> by <strong><a href="https://about.me/randinu" target="_blank">RandinuJ</a></strong>
+    </div>
+    <div class="credits">
+      Developed with <span style="color: red;">&#10084;</span> by
+      <strong><a href="https://about.me/randinu" target="_blank">RandinuJ</a></strong>
     </div>
   </div>
-<!--div class="credits">
-        Developed with <span style="color: red;">&#10084;</span> by <strong><a href="https://about.me/randinu" target="_blank">RandinuJ</a></strong>
-</div-->
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const targetDate = new Date("November 10, 2025 00:00:00").getTime();
-      const container = document.querySelector('#container');
-      const switchButton = document.querySelector('#modeSwitch');
-      const countdownBox = document.querySelector('#countdownBox');
-      const quoteElement = document.querySelector('#quote');
+  document.addEventListener("DOMContentLoaded", () => {
+    const targetDate = new Date("November 10, 2025 00:00:00").getTime();
+    const container   = document.getElementById("container");
+    const switchBtn   = document.getElementById("modeSwitch");
+    const countdownEl = document.getElementById("countdown");
+    const box         = document.getElementById("countdownBox");
+    const quoteEl     = document.getElementById("quote");
 
-      const quotes = [
-        {text: "The only way to do great work is to love what you do.", author: "Steve Jobs"},
-        {text: "An investment in knowledge pays the best interest.", author: "Benjamin Franklin"},
-        {text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt"},
-        {text: "Education is not preparation for life; education is life itself.", author: "John Dewey"},
-        {text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela"},
-        {text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela"},
-        {text: "The more that you read, the more things you will know. The more that you learn, the more places you’ll go.", author: "Dr. Seuss"},
-        {text: "Failure is simply the opportunity to begin again, this time more intelligently.", author: "Henry Ford"},
-        {text: "Learning never exhausts the mind.", author: "Leonardo da Vinci"},
-        {text: "The harder the battle, the sweeter the victory.", author: "Les Brown"},
-        {text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King"},
-        {text: "Once you stop learning, you start dying.", author: "Albert Einstein"},
-        {text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius"},
-        {text: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi"},
-        {text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill"},
-        {text: "Difficulties in life are intended to make us better, not bitter.", author: "Dan Reeves"},
-        {text: "The only way to learn mathematics is to do mathematics.", author: "Paul Halmos"},
-        {text: "The roots of education are bitter, but the fruit is sweet.", author: "Aristotle"},
-        {text: "It always seems impossible until it's done.", author: "Nelson Mandela"},
-        {text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell"}
-      ];
+    const quotes = [
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      /* … all your other quotes … */
+      { text: "It always seems impossible until it's done.", author: "Nelson Mandela" }
+    ];
 
-      function displayRandomQuote() {
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        const quote = quotes[randomIndex];
-        quoteElement.innerHTML = `<span class="quote">"${quote.text}"</span><br><span class="author">— ${quote.author}</span>`;
-      }
+    function displayRandomQuote() {
+      const q = quotes[Math.floor(Math.random() * quotes.length)];
+      quoteEl.innerHTML = `<span class="quote">"${q.text}"</span><br><span class="author">— ${q.author}</span>`;
+    }
 
-      function calculateTimeLeft() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
+    function updateCountdown() {
+      const now = Date.now();
+      let diff = targetDate - now;
+      const months  = Math.floor(diff / (1000*60*60*24*30.4375));
+      diff %= (1000*60*60*24*30.4375);
+      const days    = Math.floor(diff / (1000*60*60*24));
+      diff %= (1000*60*60*24);
+      const hours   = Math.floor(diff / (1000*60*60));
+      diff %= (1000*60*60);
+      const minutes = Math.floor(diff / (1000*60));
+      const seconds = Math.floor((diff % (1000*60)) / 1000);
 
-        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30.4375));
-        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      countdownEl.textContent =
+        `You have ${months} Months ${days} Days ${hours} Hours ${minutes} Minutes & ${seconds} Seconds for the A/L Exam.`;
+    }
 
-        return { months, days, hours, minutes, seconds };
-      }
+    function toggleDarkMode() {
+      container.classList.toggle("dark", switchBtn.checked);
+      container.classList.toggle("light", !switchBtn.checked);
+      box.classList.toggle("darkbg", switchBtn.checked);
+      box.classList.toggle("lightbg", !switchBtn.checked);
+    }
 
-      function updateCountdown() {
-        const { months, days, hours, minutes, seconds } = calculateTimeLeft();
-        document.querySelector("#countdown").textContent = `
-          You have ${months} Months ${days} Days ${hours} Hours ${minutes} Minutes & ${seconds} Seconds for the A/L Exam.
-        `;
-      }
-
-      function toggleDarkMode() {
-        container.classList.toggle('dark', switchButton.checked);
-        container.classList.toggle('light', !switchButton.checked);
-        
-        countdownBox.classList.toggle('darkbg', switchButton.checked);
-        countdownBox.classList.toggle('lightbg', !switchButton.checked);
-      }
-
-      switchButton.addEventListener('change', toggleDarkMode);
-
-      setInterval(updateCountdown, 1000);
-      updateCountdown();
-      displayRandomQuote();
-    });
-
-  /*  let likeButton = document.getElementById('likeButton');
-let likeCount = document.getElementById('likeCount');
-let shareButton = document.getElementById('shareButton');
-
-// Like button functionality
-let isLiked = false;
-let likes = 0;
-
-likeButton.addEventListener('click', () => {
-  isLiked = !isLiked;
-  if (isLiked) {
-    likes++;
-    likeButton.classList.add('liked');
-  } else {
-    likes--;
-    likeButton.classList.remove('liked');
-  }
-  likeCount.textContent = likes;
-});
-
-// Share button functionality
-shareButton.addEventListener('click', () => {
-  if (navigator.share) {
-    navigator.share({
-      title: 'My Web Page',
-      url: window.location.href
-    }).catch(console.error);
-  } else {
-    alert('Sharing is not supported on this device.');
-  }
-});*/
-  function centerContainer() {
-    const container = document.querySelector('.countdown');
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
-    const containerHeight = container.offsetHeight;
-    const containerWidth = container.offsetWidth;
-
-    container.style.top = `${(viewportHeight - containerHeight) / 2}px`;
-    container.style.left = `${(viewportWidth - containerWidth) / 2}px`;
-  }
-
-  window.addEventListener('load', centerContainer);
-  window.addEventListener('resize', centerContainer);
-
+    switchBtn.addEventListener("change", toggleDarkMode);
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    displayRandomQuote();
+  });
   </script>
-
 </body>
-  </html>
+</html>
