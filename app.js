@@ -2,45 +2,134 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 
 const CountdownTimer = () => {
-  const targetDate = new Date("November 10, 2025 00:00:00").getTime();
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetDate));
+  const examStartDate = new Date("November 10, 2025 01:00:00").getTime();
+  const examEndDate = new Date("November 29, 2025 11:40:00").getTime();
+  const [timeData, setTimeData] = useState(calculateTime());
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(targetDate));
+      setTimeData(calculateTime());
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, []);
 
-  function calculateTimeLeft(targetDate) {
+  function calculateTime() {
     const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30.4375));
-    const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    return { months, days, hours, minutes, seconds };
+    
+    // Before exam starts
+    if (now < examStartDate) {
+      const distance = examStartDate - now;
+      const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30.4375));
+      const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      return { phase: 'before', months, days, hours, minutes, seconds };
+    }
+    
+    // During exam
+    if (now >= examStartDate && now <= examEndDate) {
+      const distance = examEndDate - now;
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      return { phase: 'during', days, hours, minutes, seconds };
+    }
+    
+    // After exam ends
+    return { phase: 'after' };
   }
 
   function handleModeSwitch() {
     setIsDarkMode(!isDarkMode);
   }
 
-  const { months, days, hours, minutes, seconds } = timeLeft;
+  const renderContent = () => {
+    if (timeData.phase === 'before') {
+      return (
+        <>
+          <div className="timer-display">
+            <div className="time-card pulse">
+              <span className="time-value">{timeData.months}</span>
+              <span className="time-label">Months</span>
+            </div>
+            <div className="time-card pulse">
+              <span className="time-value">{timeData.days}</span>
+              <span className="time-label">Days</span>
+            </div>
+            <div className="time-card pulse">
+              <span className="time-value">{timeData.hours}</span>
+              <span className="time-label">Hours</span>
+            </div>
+            <div className="time-card pulse">
+              <span className="time-value">{timeData.minutes}</span>
+              <span className="time-label">Minutes</span>
+            </div>
+            <div className="time-card pulse">
+              <span className="time-value">{timeData.seconds}</span>
+              <span className="time-label">Seconds</span>
+            </div>
+          </div>
+          <p className="message bounce">The clock is ticking! Every second counts. Stay focused and work hard!</p>
+          <p className="sub-message">Your future begins with the choices you make today. Good luck! 🎓</p>
+        </>
+      );
+    }
+    
+    if (timeData.phase === 'during') {
+      return (
+        <>
+          <h1 className="exam-status glow">🔥 EXAM IN PROGRESS 🔥</h1>
+          <div className="timer-display">
+            <div className="time-card shake">
+              <span className="time-value">{timeData.days}</span>
+              <span className="time-label">Days</span>
+            </div>
+            <div className="time-card shake">
+              <span className="time-value">{timeData.hours}</span>
+              <span className="time-label">Hours</span>
+            </div>
+            <div className="time-card shake">
+              <span className="time-value">{timeData.minutes}</span>
+              <span className="time-label">Minutes</span>
+            </div>
+            <div className="time-card shake">
+              <span className="time-value">{timeData.seconds}</span>
+              <span className="time-label">Seconds</span>
+            </div>
+          </div>
+          <p className="message flash">Time remaining until exam completion</p>
+          <p className="sub-message">Stay calm, stay focused, you've got this! 💪</p>
+        </>
+      );
+    }
+    
+    // After exam
+    return (
+      <>
+        <h1 className="exam-status celebration">🎉 EXAM COMPLETED! 🎉</h1>
+        <p className="message fade-in">Congratulations on completing your A/L Exam!</p>
+        <p className="sub-message">You've worked hard and given it your all. Be proud of yourself! 🌟</p>
+        <p className="sub-message">Now it's time to relax and wait for the results with confidence.</p>
+        <div className="confetti">✨🎊🎈🎁🏆</div>
+      </>
+    );
+  };
 
   return (
-    <div className={`container ${isDarkMode ? "dark" : "light"}`}>
+    <div className={`container ${isDarkMode ? "dark" : "light"} ${timeData.phase}`}>
       <div className="countdown">
+        <h2 className="title">A/L Examination Countdown</h2>
         <div className="timer">
-          <h1>You have {months} Months {days} Days {hours} Hours {minutes} Minutes & {seconds} Seconds for the A/L Exam.</h1>
-          <p className="message">The clock is ticking son, work now or you shall regret. Every second counts. Good luck!</p>
+          {renderContent()}
         </div>
         <div className="mode-switch">
+          <span className="mode-label">{isDarkMode ? '🌙' : '☀️'}</span>
           <label className="switch">
             <input
               type="checkbox"
@@ -56,4 +145,3 @@ const CountdownTimer = () => {
 };
 
 export default CountdownTimer;
-         

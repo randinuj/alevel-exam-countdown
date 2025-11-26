@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Countdown Timer</title>
+  <title>A/L Exam Countdown Timer</title>
   <style>
     @font-face {
       font-family: 'Product Sans';
@@ -12,139 +12,256 @@
       font-style: normal;
     }
 
-    /* Make html/body fill viewport and center children */
-    html{
-      height:100%;
-      background-color:#f0f0f0;
-    }
-    body {
+    * {
       margin: 0;
       padding: 0;
-      min-height: 100vh;              /* fill screen */
-      display: grid;
-      place-items: center;       /* center .container */
-      font-family: 'Product Sans', sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
+      box-sizing: border-box;
     }
 
-    /* Your container box */
+    html, body {
+      height: 100%;
+      font-family: 'Product Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.5s ease;
+    }
+
+    body.light {
+      background: linear-gradient(135deg, #e8eaf6, #c5cae9, #9fa8da);
+      color: #1a1a2e;
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #001a33, #002952, #003d70);
+      color: #f5f5f5;
+    }
+
     .container {
+      width: 100%;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
-      transition: background-color 0.3s ease;
-      display: grid;
-      place-items: center;
-      
+      justify-content: center;
     }
 
-    /* Light & dark backgrounds on the container wrapper */
-    .light {
-      background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
-      color: black;
-    }
-    .dark {
-      background: linear-gradient(135deg, #2c3e50, #34495e);
-      color: white;
-    }
-
-    /* Countdown card */
-    .countdown {
+    .countdown-card {
       text-align: center;
-      max-width: 600px;
-      width: 100%;
-      padding: 20px;
-      border-radius: 10px;
-      box-sizing: border-box;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
-    .lightbg { background-color: rgba(255,255,255,0.5); }
-    .darkbg  { background-color: rgba(0,0,0,0.5); }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+    body.dark .countdown-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    p {
-      font-size: 2rem;
+
+    .timer {
       margin-bottom: 2rem;
     }
-    .quote { font-size: 1.1rem; font-style: italic; }
-    .author { font-size: 1.1rem; margin-top: 5px; font-weight: bold; }
 
-    /* Toggle switch */
-    .switch-container { margin-top: 1rem; }
+    .countdown-text {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .exam-status {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    .message {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin: 1rem 0;
+      line-height: 1.6;
+    }
+
+    .sub-message {
+      font-size: 1rem;
+      font-weight: 300;
+      margin: 0.8rem 0;
+      line-height: 1.6;
+    }
+
+    .quote-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    body.dark .quote-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .quote {
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .author {
+      font-size: 1rem;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+
+    .mode-switch {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .switch {
       position: relative;
       display: inline-block;
       width: 60px;
       height: 34px;
     }
-    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
     .slider {
       position: absolute;
       cursor: pointer;
-      inset: 0;
-      background-color: #808080;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #9fa8da;
       transition: 0.4s;
-      border-radius: 34px;
+      border-radius: 50px;
     }
+
     .slider:before {
-      content: "";
       position: absolute;
-      height: 26px; width: 26px;
-      border-radius: 50%;
-      background: white;
-      bottom: 4px; left: 4px;
+      content: "";
+      height: 26px;
+      width: 26px;
+      border-radius: 50px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
       transition: 0.4s;
     }
-    input:checked + .slider { background-color: #2196f3; }
-    input:checked + .slider:before { transform: translateX(26px); }
 
-    /* Credits */
+    input:checked + .slider {
+      background-color: #002952;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
     .credits {
-      font-size: 0.8rem;
-      margin-top: 10px;
-      padding-top: 10px;
+      margin-top: 2rem;
+      font-size: 0.9rem;
       text-align: center;
-      transition: color 0.3s ease;
+      opacity: 0.9;
+    }
+
+    .credits a {
+      color: inherit;
       text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.3s;
     }
-    .light .credits { color: gray; }
-    .dark .credits  { color: lightgray; }
 
-    /* Responsiveness */
+    .credits a:hover {
+      opacity: 0.7;
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      h1 { font-size: 1.5rem; }
-      p  { font-size: 0.9rem; }
-      .switch { width: 50px; height: 28px; }
-      .slider:before { width: 22px; height: 22px; bottom: 3px; }
-    }
-    @media (max-width: 480px) {
-      h1 { font-size: 1.2rem; }
-      p  { font-size: 0.8rem; }
-      .container { padding: 10px; }
-      .countdown { padding: 15px; }
-    }
-    body.light {
-  background: linear-gradient(135deg, #f0f0f0, #d1d1d1);
-  color: black;
-}
+      .countdown-card {
+        padding: 2rem 1.5rem;
+      }
 
-body.dark {
-  background: linear-gradient(135deg, #2c3e50, #34495e);
-  color: white;
+      .countdown-text {
+        font-size: 1.5rem;
+      }
+
+      .exam-status {
+        font-size: 2rem;
+      }
+
+      .message {
+        font-size: 1rem;
+      }
+
+      .sub-message {
+        font-size: 0.9rem;
+      }
+
+      .quote {
+        font-size: 1rem;
+      }
+
+      .author {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .countdown-card {
+        padding: 1.5rem 1rem;
+      }
+
+      .countdown-text {
+        font-size: 1.2rem;
+      }
+
+      .exam-status {
+        font-size: 1.6rem;
+      }
+
+      .message {
+        font-size: 0.9rem;
+      }
+
+      .sub-message {
+        font-size: 0.8rem;
+      }
+
+      .quote {
+        font-size: 0.9rem;
+      }
+
+      .author {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
 <body class="light" id="body">
-  <div class="container" id="container">
-    <div class="countdown lightbg" id="countdownBox">
-      <h1 id="countdown">Loading...</h1>
-      <p id="quote"></p>
-      <div class="switch-container">
+  <div class="container">
+    <div class="countdown-card">
+      <div class="timer" id="timerContent">
+        <p>Loading...</p>
+      </div>
+      <div class="mode-switch">
         <label class="switch">
           <input type="checkbox" id="modeSwitch">
           <span class="slider"></span>
@@ -152,77 +269,116 @@ body.dark {
       </div>
     </div>
     <div class="credits">
-      Developed with <span style="color: red;">&#10084;</span> by
-      <strong><a class="credits" href="https://about.me/randinu" target="_blank">Randinu Jayaratne</a></strong>
+      Developed with love by
+      <strong><a href="https://about.me/randinu" target="_blank">Randinu Jayaratne</a></strong>
     </div>
   </div>
 
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const targetDate = new Date("November 10, 2025 00:00:00").getTime();
-    const container   = document.getElementById("container");
-    const switchBtn   = document.getElementById("modeSwitch");
-    const countdownEl = document.getElementById("countdown");
-    const box         = document.getElementById("countdownBox");
-    const quoteEl     = document.getElementById("quote");
+    const examStartDate = new Date("November 10, 2025 01:00:00").getTime();
+    const examEndDate = new Date("November 29, 2025 11:40:00").getTime();
+    const body = document.getElementById("body");
+    const switchBtn = document.getElementById("modeSwitch");
+    const timerContent = document.getElementById("timerContent");
 
     const quotes = [
-              {text: "The only way to do great work is to love what you do.", author: "Steve Jobs"},  
-        {text: "An investment in knowledge pays the best interest.", author: "Benjamin Franklin"},  
-        {text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt"},  
-        {text: "Education is not preparation for life; education is life itself.", author: "John Dewey"},  
-        {text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela"},  
-        {text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela"},  
-        {text: "The more that you read, the more things you will know. The more that you learn, the more places you’ll go.", author: "Dr. Seuss"},  
-        {text: "Failure is simply the opportunity to begin again, this time more intelligently.", author: "Henry Ford"},  
-        {text: "Learning never exhausts the mind.", author: "Leonardo da Vinci"},  
-        {text: "The harder the battle, the sweeter the victory.", author: "Les Brown"},  
-        {text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King"},  
-        {text: "Once you stop learning, you start dying.", author: "Albert Einstein"},  
-        {text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius"},  
-        {text: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi"},  
-        {text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill"},  
-        {text: "Difficulties in life are intended to make us better, not bitter.", author: "Dan Reeves"},  
-        {text: "The only way to learn mathematics is to do mathematics.", author: "Paul Halmos"},  
-        {text: "The roots of education are bitter, but the fruit is sweet.", author: "Aristotle"},  
-        {text: "It always seems impossible until it's done.", author: "Nelson Mandela"},  
-        {text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell"}  
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      { text: "An investment in knowledge pays the best interest.", author: "Benjamin Franklin" },
+      { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+      { text: "Education is not preparation for life; education is life itself.", author: "John Dewey" },
+      { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela" },
+      { text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+      { text: "The more that you read, the more things you will know. The more that you learn, the more places you'll go.", author: "Dr. Seuss" },
+      { text: "Failure is simply the opportunity to begin again, this time more intelligently.", author: "Henry Ford" },
+      { text: "Learning never exhausts the mind.", author: "Leonardo da Vinci" },
+      { text: "The harder the battle, the sweeter the victory.", author: "Les Brown" },
+      { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+      { text: "Once you stop learning, you start dying.", author: "Albert Einstein" },
+      { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+      { text: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi" },
+      { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+      { text: "Difficulties in life are intended to make us better, not bitter.", author: "Dan Reeves" },
+      { text: "The only way to learn mathematics is to do mathematics.", author: "Paul Halmos" },
+      { text: "The roots of education are bitter, but the fruit is sweet.", author: "Aristotle" },
+      { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+      { text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell" }
     ];
 
-    function displayRandomQuote() {
-      const q = quotes[Math.floor(Math.random() * quotes.length)];
-      quoteEl.innerHTML = `<span class="quote">"${q.text}"</span><br><span class="author">— ${q.author}</span>`;
+    const currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    function calculateTime() {
+      const now = new Date().getTime();
+      
+      if (now < examStartDate) {
+        const distance = examStartDate - now;
+        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30.4375));
+        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        return { phase: 'before', months, days, hours, minutes, seconds };
+      }
+      
+      if (now >= examStartDate && now <= examEndDate) {
+        const distance = examEndDate - now;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        return { phase: 'during', days, hours, minutes, seconds };
+      }
+      
+      return { phase: 'after' };
     }
 
-    function updateCountdown() {
-      const now = Date.now();
-      let diff = targetDate - now;
-      const months  = Math.floor(diff / (1000*60*60*24*30.4375));
-      diff %= (1000*60*60*24*30.4375);
-      const days    = Math.floor(diff / (1000*60*60*24));
-      diff %= (1000*60*60*24);
-      const hours   = Math.floor(diff / (1000*60*60));
-      diff %= (1000*60*60);
-      const minutes = Math.floor(diff / (1000*60));
-      const seconds = Math.floor((diff % (1000*60)) / 1000);
+    function updateDisplay() {
+      const timeData = calculateTime();
 
-      countdownEl.textContent =
-        `You have ${months} Months ${days} Days ${hours} Hours ${minutes} Minutes & ${seconds} Seconds for the A/L Exam.`;
+      if (timeData.phase === 'before') {
+        timerContent.innerHTML = `
+          <h1 class="countdown-text">
+            You have ${timeData.months} Months ${timeData.days} Days ${timeData.hours} Hours ${timeData.minutes} Minutes & ${timeData.seconds} Seconds for the A/L Exam.
+          </h1>
+          <p class="message">The clock is ticking. Every second counts. Good luck!</p>
+          <div class="quote-section">
+            <p class="quote">"${currentQuote.text}"</p>
+            <p class="author">— ${currentQuote.author}</p>
+          </div>
+        `;
+      } else if (timeData.phase === 'during') {
+        timerContent.innerHTML = `
+          <h1 class="exam-status">EXAM IN PROGRESS</h1>
+          <h2 class="countdown-text">
+            ${timeData.days} Days ${timeData.hours} Hours ${timeData.minutes} Minutes ${timeData.seconds} Seconds Remaining
+          </h2>
+          <p class="message">Stay calm and focused. You've got this!</p>
+          <div class="quote-section">
+            <p class="quote">"${currentQuote.text}"</p>
+            <p class="author">— ${currentQuote.author}</p>
+          </div>
+        `;
+      } else {
+        timerContent.innerHTML = `
+          <h1 class="exam-status">EXAM COMPLETED</h1>
+          <p class="message">Congratulations on completing your A/L Exam!</p>
+          <p class="sub-message">You've worked hard and given it your all. Be proud of yourself!</p>
+          <p class="sub-message">Now it's time to relax and wait for the results with confidence.</p>
+          <div class="quote-section">
+            <p class="quote">"${currentQuote.text}"</p>
+            <p class="author">— ${currentQuote.author}</p>
+          </div>
+        `;
+      }
     }
 
     function toggleDarkMode() {
-  const body = document.getElementById("body");
-  body.classList.toggle("dark", switchBtn.checked);
-  body.classList.toggle("light", !switchBtn.checked);
-  box.classList.toggle("darkbg", switchBtn.checked);
-  box.classList.toggle("lightbg", !switchBtn.checked);
+      body.classList.toggle('dark', switchBtn.checked);
+      body.classList.toggle('light', !switchBtn.checked);
     }
 
     switchBtn.addEventListener("change", toggleDarkMode);
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-    displayRandomQuote();
-  });
+    setInterval(updateDisplay, 1000);
+    updateDisplay();
   </script>
 </body>
 </html>
