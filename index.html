@@ -4,6 +4,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#001a33">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>A/L Exam Countdown Timer</title>
   <style>
     @font-face {
@@ -23,6 +26,7 @@
       height: 100%;
       font-family: 'Product Sans', sans-serif;
       overflow-x: hidden;
+      -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
     }
 
     body {
@@ -30,7 +34,9 @@
       align-items: center;
       justify-content: center;
       transition: background 0.5s ease;
-      position: relative; /* Added for proper star positioning */
+      position: relative;
+      min-height: 100vh;
+      padding: 10px;
     }
 
     body.light {
@@ -43,7 +49,7 @@
       color: #f5f5f5;
     }
 
-    /* Stars Background */
+    /* Stars Background - Optimized for Mobile */
     .stars {
       position: fixed;
       top: 0;
@@ -51,8 +57,8 @@
       width: 100%;
       height: 120%;
       transform: rotate(-45deg);
-      z-index: -1; /* Ensure stars are behind content */
-      pointer-events: none; /* Allow clicks to pass through */
+      z-index: -1;
+      pointer-events: none;
     }
 
     .star {
@@ -74,12 +80,13 @@
       border-radius: 50%;
       filter: drop-shadow(0 0 6px currentColor);
       transform: translate3d(104em, 0, 0);
-      animation: fall var(--fall-duration) var(--fall-delay) linear infinite, tail-fade var(--tail-fade-duration) var(--fall-delay) ease-out infinite;
+      animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
     }
 
-    /* Mobile adjustments for stars */
-    @media screen and (max-width: 750px) {
+    /* Mobile-specific star adjustments */
+    @media screen and (max-width: 768px) {
       .star {
+        --star-tail-length: 4em;
         animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
       }
     }
@@ -154,49 +161,38 @@
       }
     }
 
-    @keyframes tail-fade {
-      0%, 50% {
-        width: var(--star-tail-length);
-        opacity: 1;
-      }
-      70%, 80% {
-        width: 0;
-        opacity: 0.4;
-      }
-      100% {
-        width: 0;
-        opacity: 0;
-      }
-    }
-
     @keyframes blink {
       50% {
         opacity: 0.6;
       }
     }
 
-    /* Rest of your existing styles */
+    /* Main Container */
     .container {
       width: 100%;
-      padding: 20px;
+      max-width: 1200px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      position: relative; /* Ensure content is above stars */
+      position: relative;
       z-index: 1;
     }
 
+    /* Countdown Card */
     .countdown-card {
       text-align: center;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); /* Safari support */
       border-radius: 20px;
-      padding: 3rem 2.5rem;
+      padding: 2.5rem 2rem;
       max-width: 800px;
-      width: 90%;
+      width: 100%;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.18);
+      margin-bottom: 1.5rem;
     }
 
     body.dark .countdown-card {
@@ -205,39 +201,42 @@
     }
 
     .timer {
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .countdown-text {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 600;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .exam-status {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
+      line-height: 1.3;
     }
 
     .message {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 400;
-      margin: 1rem 0;
-      line-height: 1.6;
+      margin: 0.8rem 0;
+      line-height: 1.5;
     }
 
     .sub-message {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 300;
-      margin: 0.8rem 0;
-      line-height: 1.6;
+      margin: 0.6rem 0;
+      line-height: 1.5;
     }
 
     .quote-section {
-      margin-top: 2rem;
-      padding-top: 2rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 
@@ -246,21 +245,22 @@
     }
 
     .quote {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 0.8rem;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
       opacity: 0.9;
     }
 
     .author {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 600;
       opacity: 0.8;
     }
 
+    /* Mode Switch */
     .mode-switch {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -311,11 +311,13 @@
       transform: translateX(26px);
     }
 
+    /* Credits */
     .credits {
-      margin-top: 2rem;
-      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
       text-align: center;
       opacity: 0.9;
+      padding: 0 10px;
     }
 
     .credits a {
@@ -329,16 +331,18 @@
       opacity: 0.7;
     }
 
+    /* Share Button */
     .share-btn {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 60px;
-      height: 60px;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.3);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); /* Safari support */
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -346,23 +350,39 @@
       transition: all 0.3s ease;
       color: inherit;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      z-index: 10; /* Ensure button is above stars */
+      z-index: 10;
+      -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
     }
 
-    .share-btn:hover {
+    .share-btn:hover, .share-btn:active {
       transform: scale(1.1);
       background: rgba(255, 255, 255, 0.3);
     }
 
     .share-btn svg {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Touch-friendly improvements */
+    button, .switch, .slider {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
+      body {
+        padding: 8px;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+      
       .countdown-card {
         padding: 2rem 1.5rem;
+        border-radius: 16px;
       }
 
       .countdown-text {
@@ -370,53 +390,152 @@
       }
 
       .exam-status {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
 
       .message {
-        fontSize: 1rem;
+        font-size: 1rem;
       }
 
       .sub-message {
-        fontSize: 0.9rem;
+        font-size: 0.9rem;
       }
 
       .quote {
-        fontSize: 1rem;
+        font-size: 0.95rem;
       }
 
       .author {
-        fontSize: 0.9rem;
+        font-size: 0.85rem;
+      }
+      
+      .share-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 1rem;
+        right: 1rem;
+      }
+      
+      .share-btn svg {
+        width: 20px;
+        height: 20px;
       }
     }
 
     @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      
       .countdown-card {
         padding: 1.5rem 1rem;
+        border-radius: 14px;
       }
 
       .countdown-text {
         font-size: 1.2rem;
+        line-height: 1.3;
       }
 
       .exam-status {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
       .message {
-        fontSize: 0.9rem;
+        font-size: 0.9rem;
+        margin: 0.6rem 0;
       }
 
       .sub-message {
-        fontSize: 0.8rem;
+        font-size: 0.8rem;
+        margin: 0.5rem 0;
       }
 
       .quote {
-        fontSize: 0.9rem;
+        font-size: 0.85rem;
       }
 
       .author {
-        fontSize: 0.8rem;
+        font-size: 0.75rem;
+      }
+      
+      .mode-switch {
+        margin-top: 1rem;
+      }
+      
+      .credits {
+        font-size: 0.8rem;
+        margin-top: 1rem;
+      }
+      
+      .share-btn {
+        width: 45px;
+        height: 45px;
+        bottom: 0.8rem;
+        right: 0.8rem;
+      }
+      
+      .share-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .countdown-card {
+        padding: 1.2rem 0.8rem;
+      }
+      
+      .countdown-text {
+        font-size: 1.1rem;
+      }
+      
+      .exam-status {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Landscape mode adjustments */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        padding: 5px;
+        align-items: flex-start;
+        min-height: auto;
+      }
+      
+      .container {
+        padding-top: 10px;
+      }
+      
+      .countdown-card {
+        padding: 1rem 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .timer {
+        margin-bottom: 0.8rem;
+      }
+      
+      .countdown-text {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .exam-status {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .quote-section {
+        margin-top: 0.8rem;
+        padding-top: 0.8rem;
+      }
+    }
+
+    /* Prevent zoom on input for iOS */
+    @media screen and (max-width: 768px) {
+      input, select, textarea {
+        font-size: 16px; /* Prevents zoom on focus in iOS */
       }
     }
   </style>
@@ -447,7 +566,7 @@
       </div>
     </div>
     
-    <button id="shareBtn" class="share-btn" title="Share as Image">
+    <button id="shareBtn" class="share-btn" title="Share as Image" aria-label="Share countdown as image">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="18" cy="5" r="3"></circle>
         <circle cx="6" cy="12" r="3"></circle>
@@ -459,17 +578,25 @@
     
     <div class="credits">
       Developed with <span style="color: red;">&#10084;</span> by
-      <strong><a href="https://about.me/randinu" target="_blank">Randinu Jayaratne</a></strong>
+      <strong><a href="https://about.me/randinu" target="_blank" rel="noopener">Randinu Jayaratne</a></strong>
     </div>
   </div>
 
   <script>
-    // Your existing JavaScript code remains the same
+    // Enhanced for mobile performance
     const examStartDate = new Date("November 10, 2025 01:00:00").getTime();
     const examEndDate = new Date("November 29, 2025 11:40:00").getTime();
     const body = document.getElementById("body");
     const switchBtn = document.getElementById("modeSwitch");
     const timerContent = document.getElementById("timerContent");
+
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('countdownTheme');
+    if (savedTheme === 'dark') {
+      body.classList.remove('light');
+      body.classList.add('dark');
+      switchBtn.checked = true;
+    }
 
     const quotes = [
       { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -564,20 +691,42 @@
     function toggleDarkMode() {
       body.classList.toggle('dark', switchBtn.checked);
       body.classList.toggle('light', !switchBtn.checked);
+      
+      // Save theme preference
+      localStorage.setItem('countdownTheme', switchBtn.checked ? 'dark' : 'light');
     }
 
+    // Event listeners with touch support
     switchBtn.addEventListener("change", toggleDarkMode);
-    setInterval(updateDisplay, 1000);
-    updateDisplay();
+    
+    // Use requestAnimationFrame for smoother updates on mobile
+    let lastUpdate = 0;
+    function smoothUpdate(timestamp) {
+      if (timestamp - lastUpdate > 1000) {
+        updateDisplay();
+        lastUpdate = timestamp;
+      }
+      requestAnimationFrame(smoothUpdate);
+    }
+    requestAnimationFrame(smoothUpdate);
 
     function shareAsImage() {
+      // Show a simple loading indicator
+      const originalText = timerContent.innerHTML;
+      timerContent.innerHTML = '<p>Preparing image...</p>';
+      
       html2canvas(document.body, {
         backgroundColor: null,
         scale: 2,
         logging: false,
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
+        useCORS: true,
+        allowTaint: false
       }).then(canvas => {
+        // Restore original content
+        timerContent.innerHTML = originalText;
+        
         canvas.toBlob(blob => {
           const file = new File([blob], 'exam-countdown.png', { type: 'image/png' });
           
@@ -595,10 +744,19 @@
             link.click();
           }
         });
+      }).catch(err => {
+        console.error('Error generating image:', err);
+        timerContent.innerHTML = originalText;
+        alert('Sorry, there was an error generating the image. Please try again.');
       });
     }
 
     document.getElementById('shareBtn').addEventListener('click', shareAsImage);
+    
+    // Add touch event for better mobile support
+    document.getElementById('shareBtn').addEventListener('touchstart', function(e) {
+      e.preventDefault();
+    }, { passive: false });
   </script>
 </body>
 </html>
