@@ -83,7 +83,7 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
-      letter-spacing: 1px;
+      
     }
 
     .message {
@@ -367,7 +367,7 @@
         `;
       } else if (timeData.phase === 'during') {
         timerContent.innerHTML = `
-          <h1 class="exam-status">EXAM IN PROGRESS</h1>
+          <h1 class="exam-status">Exam In Progress</h1>
           <h2 class="countdown-text">
             ${timeData.days} Days ${timeData.hours} Hours ${timeData.minutes} Minutes ${timeData.seconds} Seconds Remaining
           </h2>
@@ -379,7 +379,7 @@
         `;
       } else {
         timerContent.innerHTML = `
-          <h1 class="exam-status">EXAM COMPLETED</h1>
+          <h1 class="exam-status">Exam Completed</h1>
           <p class="message">Congratulations on completing your A/L Exam!</p>
           <p class="sub-message">You've worked hard and given it your all. Be proud of yourself!</p>
           <p class="sub-message">Now it's time to relax and wait for the results with confidence.</p>
