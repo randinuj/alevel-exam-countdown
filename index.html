@@ -254,23 +254,33 @@
         font-size: 0.8rem;
       }
     }
-    .download-btn {
+    .share-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: inherit;
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
-  font-family: 'Product Sans', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 1.5rem;
-  transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: inherit;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.download-btn:hover {
+.share-btn:hover {
+  transform: scale(1.1);
   background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+}
+
+.share-btn svg {
+  width: 24px;
+  height: 24px;
 }
   </style>
 </head>
@@ -280,7 +290,7 @@
       <div class="timer" id="timerContent">
         <p>Loading...</p>
       </div>
-      <button id="downloadBtn" class="download-btn">Download as Image</button>
+      
       <div class="mode-switch">
         <label class="switch">
           <input type="checkbox" id="modeSwitch">
@@ -288,6 +298,15 @@
         </label>
       </div>
     </div>
+    <button id="shareBtn" class="share-btn" title="Share as Image">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="3"></circle>
+    <circle cx="6" cy="12" r="3"></circle>
+    <circle cx="18" cy="19" r="3"></circle>
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+  </svg>
+</button>
     <div class="credits">
       Developed with <span style="color: red;">&#10084;</span> by
       <strong><a href="https://about.me/randinu" target="_blank">Randinu Jayaratne</a></strong>
@@ -400,43 +419,35 @@
     setInterval(updateDisplay, 1000);
     updateDisplay();
 
-    // Add this function
-function downloadAsImage() {
-  const card = document.querySelector('.countdown-card');
-  const originalWidth = card.style.width;
-  
-  // Make it square temporarily
-  card.style.width = card.offsetHeight + 'px';
-  
-  html2canvas(card, {
+    function shareAsImage() {
+  html2canvas(document.body, {
     backgroundColor: null,
-    scale: 2, // Higher quality
-    logging: false
+    scale: 2,
+    logging: false,
+    width: window.innerWidth,
+    height: window.innerHeight
   }).then(canvas => {
-    // Crop to 1:1 ratio
-    const size = Math.min(canvas.width, canvas.height);
-    const croppedCanvas = document.createElement('canvas');
-    croppedCanvas.width = size;
-    croppedCanvas.height = size;
-    
-    const ctx = croppedCanvas.getContext('2d');
-    const x = (canvas.width - size) / 2;
-    const y = (canvas.height - size) / 2;
-    ctx.drawImage(canvas, x, y, size, size, 0, 0, size, size);
-    
-    // Download
-    const link = document.createElement('a');
-    link.download = 'exam-countdown.png';
-    link.href = croppedCanvas.toDataURL('image/png');
-    link.click();
-    
-    // Restore original width
-    card.style.width = originalWidth;
+    canvas.toBlob(blob => {
+      const file = new File([blob], 'exam-countdown.png', { type: 'image/png' });
+      
+      if (navigator.share && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: 'A/L Exam Countdown',
+          text: 'Check out my exam countdown!'
+        }).catch(err => console.log('Share cancelled'));
+      } else {
+        // Fallback: download
+        const link = document.createElement('a');
+        link.download = 'exam-countdown.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+    });
   });
 }
 
-// Add event listener after the updateDisplay function
-document.getElementById('downloadBtn').addEventListener('click', downloadAsImage);
+document.getElementById('shareBtn').addEventListener('click', shareAsImage);
   </script>
 </body>
 </html>
