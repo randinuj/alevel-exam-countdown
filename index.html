@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>A/L Exam Countdown Timer</title>
@@ -253,6 +254,24 @@
         font-size: 0.8rem;
       }
     }
+    .download-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: inherit;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-family: 'Product Sans', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.download-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
   </style>
 </head>
 <body class="light" id="body">
@@ -261,6 +280,7 @@
       <div class="timer" id="timerContent">
         <p>Loading...</p>
       </div>
+      <button id="downloadBtn" class="download-btn">Download as Image</button>
       <div class="mode-switch">
         <label class="switch">
           <input type="checkbox" id="modeSwitch">
@@ -379,6 +399,44 @@
     switchBtn.addEventListener("change", toggleDarkMode);
     setInterval(updateDisplay, 1000);
     updateDisplay();
+
+    // Add this function
+function downloadAsImage() {
+  const card = document.querySelector('.countdown-card');
+  const originalWidth = card.style.width;
+  
+  // Make it square temporarily
+  card.style.width = card.offsetHeight + 'px';
+  
+  html2canvas(card, {
+    backgroundColor: null,
+    scale: 2, // Higher quality
+    logging: false
+  }).then(canvas => {
+    // Crop to 1:1 ratio
+    const size = Math.min(canvas.width, canvas.height);
+    const croppedCanvas = document.createElement('canvas');
+    croppedCanvas.width = size;
+    croppedCanvas.height = size;
+    
+    const ctx = croppedCanvas.getContext('2d');
+    const x = (canvas.width - size) / 2;
+    const y = (canvas.height - size) / 2;
+    ctx.drawImage(canvas, x, y, size, size, 0, 0, size, size);
+    
+    // Download
+    const link = document.createElement('a');
+    link.download = 'exam-countdown.png';
+    link.href = croppedCanvas.toDataURL('image/png');
+    link.click();
+    
+    // Restore original width
+    card.style.width = originalWidth;
+  });
+}
+
+// Add event listener after the updateDisplay function
+document.getElementById('downloadBtn').addEventListener('click', downloadAsImage);
   </script>
 </body>
 </html>
